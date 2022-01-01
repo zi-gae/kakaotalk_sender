@@ -4,9 +4,9 @@ import time
 import pyperclip
 import os
 import random
-from apscheduler.schedulers.blocking import BlockingScheduler
 import datetime
 import platform
+
 
 
 def send_msg(my_msg, repeat_number):
@@ -26,36 +26,39 @@ def send_msg(my_msg, repeat_number):
 def filter_friend(filter_keyword, init_number):
     # 사람 아이콘 클릭
     try:
-        click_img(img_path + 'person_icon1.png')
+        click_img(img_path + 'inactive_person.png')
         try:
-            click_img(img_path + 'person_icon2.png')
+            click_img(img_path + 'active_person.png')
         except Exception as e :
-            print('message icon2 ', e)
+            print('Not fouund active person icon ', e)
     except Exception as e :
-        print('message icon1', e)
-    try:
-        click_img(img_path + 'x.png')
-    except:
-        pass
-    time.sleep(1)
-    # 돋보기 아이콘 오른쪽 클릭
+        print('Not fouund inactive person icon: ', e)
+    # try:
+    #     click_img(img_path + 'x.png')
+    # except:
+    #     pass
+    # time.sleep(1)
     
+    # 돋보기 아이콘 오른쪽 클릭
     click_img_plus_x(img_path+'search_icon.png', 30)
     pyautogui.keyDown('a')
     pyautogui.keyDown('esc')
     click_img_plus_x(img_path+'search_icon.png', 30)
 
 
-
     if filter_keyword == '':
+        print("ESC")
         pyautogui.keyDown('esc')
     else:
         pyperclip.copy(filter_keyword)
-
+    
+    
     pyautogui.hotkey('command', 'v')
     for i in range(int(init_number)):
+        print("init_number",init_number)
         pyautogui.keyDown('down')
     time.sleep(1)
+
 
 
 def get_os_position(x,y):
@@ -65,7 +68,6 @@ def get_os_position(x,y):
 
 def image_postion(imagePath):
     location = pyautogui.locateCenterOnScreen(imagePath, confidence = conf)
-    print("location",imagePath,location)
     if location == None:
         pass
     x, y = location
@@ -127,8 +129,8 @@ def initialize():
     # filter_keyword = input("필터링할 친구 이름. 없으면 enter.  ex) 학생 직장 99 : ")
     # repeat_number = input("반복할 횟수(ex. 필터링 검색된 친구 수) : ")
     init_number = input("필터링한 친구 기준 시작지점(ex. 필터링된 친구 시작지점) : ")
-    filter_keyword = "친"
-    repeat_number="100"
+    filter_keyword = "(0)"
+    repeat_number="999"
 
     my_msg = input("전송할 메세지. enter를 누를 경우 send_for_text.txt를 전송 : ")
     now = datetime.date.today()
